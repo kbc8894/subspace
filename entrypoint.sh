@@ -148,32 +148,34 @@ wg setconf wg0 /data/wireguard/server.conf
 ip link set wg0 up
 
 # dnsmasq service
-if ! test -d /etc/service/dnsmasq; then
-  cat <<DNSMASQ >/etc/dnsmasq.conf
-    # Only listen on necessary addresses.
-    listen-address=127.0.0.1,${SUBSPACE_IPV4_GW},${SUBSPACE_IPV6_GW}
+if [ -z "${SUBSPACE_DNSMASQ_DISABLED-}" ] ; then
+  if ! test -d /etc/service/dnsmasq; then
+    cat <<DNSMASQ >/etc/dnsmasq.conf
+      # Only listen on necessary addresses.
+      listen-address=127.0.0.1,${SUBSPACE_IPV4_GW},${SUBSPACE_IPV6_GW}
 
-    # Never forward plain names (without a dot or domain part)
-    domain-needed
+      # Never forward plain names (without a dot or domain part)
+      domain-needed
 
-    # Never forward addresses in the non-routed address spaces.
-    bogus-priv
-DNSMASQ
+      # Never forward addresses in the non-routed address spaces.
+      bogus-priv
+  DNSMASQ
 
-  mkdir -p /etc/service/dnsmasq
-  cat <<RUNIT >/etc/service/dnsmasq/run
-#!/bin/sh
-exec /usr/sbin/dnsmasq --no-daemon
-RUNIT
-  chmod +x /etc/service/dnsmasq/run
+    mkdir -p /etc/service/dnsmasq
+    cat <<RUNIT >/etc/service/dnsmasq/run
+  #!/bin/sh
+  exec /usr/sbin/dnsmasq --no-daemon
+  RUNIT
+    chmod +x /etc/service/dnsmasq/run
 
-  # dnsmasq service log
-  mkdir -p /etc/service/dnsmasq/log/main
-  cat <<RUNIT >/etc/service/dnsmasq/log/run
-#!/bin/sh
-exec svlogd -tt ./main
-RUNIT
-  chmod +x /etc/service/dnsmasq/log/run
+    # dnsmasq service log
+    mkdir -p /etc/service/dnsmasq/log/main
+    cat <<RUNIT >/etc/service/dnsmasq/log/run
+  #!/bin/sh
+  exec svlogd -tt ./main
+  RUNIT
+    chmod +x /etc/service/dnsmasq/log/run
+  fi
 fi
 
 # subspace service
