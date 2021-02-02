@@ -37,7 +37,7 @@ if [ -z "${SUBSPACE_LISTENPORT-}" ]; then
 fi
 
 if [ -z "${SUBSPACE_LISTENIP-}" ]; then
-  export SUBSPACE_LISTENIP="0.0.0.0"
+  export SUBSPACE_LISTENIP="0.0.0.0/0"
 fi
 
 if [ -z "${SUBSPACE_HTTP_INSECURE-}" ]; then
