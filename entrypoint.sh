@@ -134,9 +134,9 @@ fi
 
 cat <<WGSERVER >/data/wireguard/server.conf
 [Interface]
+Address = ${SUBSPACE_WIREGUARD_IP}
 PrivateKey = $(cat /data/wireguard/server.private)
 ListenPort = ${SUBSPACE_LISTENPORT}
-Address = ${SUBSPACE_WIREGUARD_IP}
 
 WGSERVER
 cat /data/wireguard/peers/*.conf >>/data/wireguard/server.conf
