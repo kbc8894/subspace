@@ -179,8 +179,6 @@ docker create \
     --env SUBSPACE_IPV6_NAT_ENABLED=1 \
         # Optionally manage your own caching dns server
     --env SUBSPACE_DNSMASQ_DISABLED=1 \
-        # Optionally manage your own caching dns server
-    --env SUBSPACE_WIREGUARD_IP=0.0.0.0 \
     subspacecommunity/subspace:latest
 
 $ sudo docker start subspace
