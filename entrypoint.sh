@@ -36,10 +36,6 @@ if [ -z "${SUBSPACE_LISTENPORT-}" ]; then
   export SUBSPACE_LISTENPORT="51820"
 fi
 
-if [ -z "${SUBSPACE_WIREGUARD_IP-}" ]; then
-  export SUBSPACE_WIREGUARD_IP="10.99.97.1/32"
-fi
-
 if [ -z "${SUBSPACE_HTTP_INSECURE-}" ]; then
   export SUBSPACE_HTTP_INSECURE="false"
 fi
@@ -136,7 +132,6 @@ cat <<WGSERVER >/data/wireguard/server.conf
 [Interface]
 PrivateKey = $(cat /data/wireguard/server.private)
 ListenPort = ${SUBSPACE_LISTENPORT}
-Address = ${SUBSPACE_WIREGUARD_IP}
 
 WGSERVER
 cat /data/wireguard/peers/*.conf >>/data/wireguard/server.conf
