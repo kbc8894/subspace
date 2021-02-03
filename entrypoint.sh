@@ -159,13 +159,13 @@ if [ -z "${SUBSPACE_DNSMASQ_DISABLED-}" ] ; then
 
       # Never forward addresses in the non-routed address spaces.
       bogus-priv
-  DNSMASQ
+DNSMASQ
 
     mkdir -p /etc/service/dnsmasq
     cat <<RUNIT >/etc/service/dnsmasq/run
   #!/bin/sh
   exec /usr/sbin/dnsmasq --no-daemon
-  RUNIT
+RUNIT
     chmod +x /etc/service/dnsmasq/run
 
     # dnsmasq service log
@@ -173,7 +173,7 @@ if [ -z "${SUBSPACE_DNSMASQ_DISABLED-}" ] ; then
     cat <<RUNIT >/etc/service/dnsmasq/log/run
   #!/bin/sh
   exec svlogd -tt ./main
-  RUNIT
+RUNIT
     chmod +x /etc/service/dnsmasq/log/run
   fi
 fi
