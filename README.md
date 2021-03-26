@@ -185,15 +185,16 @@ docker create \
     --env SUBSPACE_NAMESERVERS="1.1.1.1,8.8.8.8" \
 	# Optional variable to change WireGuard Listenport
     --env SUBSPACE_LISTENPORT="51820" \
-    # Optional variables to change IPv4/v6 prefixes
+  # Optional variables to change IPv4/v6 prefixes
     --env SUBSPACE_IPV4_POOL="10.99.97.0/24" \
     --env SUBSPACE_IPV6_POOL="fd00::10:97:0/64" \
 	# Optional variables to change IPv4/v6 Gateway
+  # (NOTICE: If you change SUBSPACE_IPV{4/6}_POOL, you don't need to set. just commnet out.)
     --env SUBSPACE_IPV4_GW="10.99.97.1" \
     --env SUBSPACE_IPV6_GW="fd00::10:97:1" \
 	# Optional variable to enable or disable IPv6 NAT
     --env SUBSPACE_IPV6_NAT_ENABLED=1 \
-        # Optionally manage your own caching dns server
+  # Optionally manage your own caching dns server
     --env SUBSPACE_DNSMASQ_DISABLED=1 \
     ghcr.io/kbc8894/subspace:latest
 
@@ -207,7 +208,7 @@ $ sudo docker logs subspace
 
 #### Docker-Compose Example
 
-```
+```yaml
 version: "3.3"
 services:
   subspace:
@@ -225,6 +226,7 @@ services:
     - SUBSPACE_LISTENPORT=51820
     - SUBSPACE_IPV4_POOL=10.99.97.0/24
     - SUBSPACE_IPV6_POOL=fd00::10:97:0/64
+    # (NOTICE: If you change SUBSPACE_IPV{4/6}_POOL, you don't need to set. just commnet out.)
     - SUBSPACE_IPV4_GW=10.99.97.1
     - SUBSPACE_IPV6_GW=fd00::10:97:1
     - SUBSPACE_IPV6_NAT_ENABLED=1
