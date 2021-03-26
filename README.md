@@ -116,7 +116,7 @@ $ subspace --http-host subspace.example.com
 
 ### Run as a Docker container
 
-#### clear iptable (Oracle Cloud)
+#### Clear iptable (Optional, Oracle Cloud)
 
 ```bash
 sudo iptables -F && sudo iptables -X && sudo netfilter-persistent save && sudo netfilter-persistent reload
