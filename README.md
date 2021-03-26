@@ -152,6 +152,7 @@ systemctl status systemd-modules-load.service
 sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv6.conf.all.forwarding=1
 
+# Enable wg0 self-forwarding
 iptables -I FORWARD -i wg0 -o wg0 -j ACCEPT
 
 # Set DNS server.
