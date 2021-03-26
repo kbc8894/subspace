@@ -1,3 +1,9 @@
+
+### Branch info
+
+* [upstream repo (master branch)](https://github.com/subspacecommunity/subspace)
+* [patched-upstream repo (patched-master branch)](https://github.com/sync667/subspace)
+
 # Subspace - A simple WireGuard VPN server GUI
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
@@ -110,6 +116,12 @@ $ subspace --http-host subspace.example.com
 
 ### Run as a Docker container
 
+#### clear iptable (Oracle Cloud)
+
+```bash
+sudo iptables -F && sudo iptables -X && sudo netfilter-persistent save && sudo netfilter-persistent reload
+```
+
 #### Install WireGuard on the host
 
 The container expects WireGuard to be installed on the host. The official image is `subspacecommunity/subspace`.
@@ -117,18 +129,11 @@ The container expects WireGuard to be installed on the host. The official image 
 ```bash
 add-apt-repository -y ppa:wireguard/wireguard
 apt-get update
-apt-get install -y wireguard
-
-# Remove dnsmasq because it will run inside the container.
-apt-get remove -y dnsmasq
+apt-get install -y wireguard resolvconf
 
 # Disable systemd-resolved listener if it blocks port 53.
 echo "DNSStubListener=no" >> /etc/systemd/resolved.conf
 systemctl restart systemd-resolved
-
-# Set Cloudfare DNS server.
-echo nameserver 1.1.1.1 > /etc/resolv.conf
-echo nameserver 1.0.0.1 >> /etc/resolv.conf
 
 # Load modules.
 modprobe wireguard
@@ -147,6 +152,16 @@ systemctl status systemd-modules-load.service
 sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv6.conf.all.forwarding=1
 
+iptables -I FORWARD -i wg0 -o wg0 -j ACCEPT
+
+# Set DNS server.
+echo nameserver 8.8.8.8 >> /etc/resolvconf/resolv.conf.d/head
+echo nameserver 1.1.1.1 >> /etc/resolvconf/resolv.conf.d/head
+
+systemctl start resolvconf.service
+systemctl enable resolvconf.service
+
+resolvconf -u
 ```
 
 Follow the official Docker install instructions: [Get Docker CE for Ubuntu](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/)
@@ -212,6 +227,7 @@ services:
     - SUBSPACE_IPV4_GW=10.99.97.1
     - SUBSPACE_IPV6_GW=fd00::10:97:1
     - SUBSPACE_IPV6_NAT_ENABLED=1
+    - SUBSPACE_DNSMASQ_DISABLED=1
    cap_add:
     - NET_ADMIN
    network_mode: "host"
