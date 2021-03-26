@@ -195,7 +195,7 @@ docker create \
     --env SUBSPACE_IPV6_NAT_ENABLED=1 \
         # Optionally manage your own caching dns server
     --env SUBSPACE_DNSMASQ_DISABLED=1 \
-    subspacecommunity/subspace:latest
+    ghcr.io/kbc8894/subspace:latest
 
 $ sudo docker start subspace
 
@@ -211,7 +211,7 @@ $ sudo docker logs subspace
 version: "3.3"
 services:
   subspace:
-   image: subspacecommunity/subspace:latest
+   image: ghcr.io/kbc8894/subspace:latest
    container_name: subspace
    volumes:
     - /opt/docker/subspace:/data
